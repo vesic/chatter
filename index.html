@@ -1,8 +1,28 @@
 <h1>Chat</h1>
 
+<div id="chat">
+    <input id="input"/><button>Send</button>
+</div>
+
+<hr>
+
+<div id="messages"></div>
+
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
-    var socket = io();
+    $(() => {
+        var socket = io();
+        
+        $('button').on('click', () => {
+            var input = $('#input');
+            socket.emit('message', input.val());
+            input.val('');            
+        })
+        
+        socket.on('message', (received) => {
+            $('#messages').append('<div>' + received + '</div>');
+        })
+    })
 </script>

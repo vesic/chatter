@@ -1,6 +1,6 @@
-var app = require('express')() ,
-    http = require('http').Server(app) ,
-    io = require('socket.io')(http) ,
+var app = require('express')(),
+    http = require('http').Server(app),
+    io = require('socket.io')(http),
     port = process.env.PORT || 3000;
     
 app.get('/', (req, res) => {
@@ -8,7 +8,9 @@ app.get('/', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-    console.log('user connected');    
+    socket.on('message', (received) => {
+        io.emit('message', received);
+    })
 });
 
 http.listen(port, (err) => {
